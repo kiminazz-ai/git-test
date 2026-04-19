@@ -1,118 +1,45 @@
-// -------------------------------------------------------
-// Weather App — app.js
-// Uses OpenWeatherMap free API
-// Get your own free API key at: https://openweathermap.org/api
-// -------------------------------------------------------
+const weatherBox = document.getElementById('omar-weather-app');
+const spawnArea = document.getElementById('icon-spawn-area');
+const weatherEmojis = ['☀️', '☁️', '🌧️', '⚡', '❄️'];
 
-const API_KEY = "bd5e378503939ddaee76f12ad7a97608"; // Replace with your own key
-
-const weatherIcons = {
-  Clear: "☀️",
-  Clouds: "☁️",
-  Rain: "🌧️",
-  Drizzle: "🌦️",
-  Thunderstorm: "⛈️",
-  Snow: "❄️",
-  Mist: "🌫️",
-  Fog: "🌫️",
-  Haze: "🌫️",
-  Smoke: "🌫️",
-  Dust: "🌫️",
-  Sand: "🌫️",
-  Ash: "🌫️",
-  Squall: "💨",
-  Tornado: "🌪️",
-};
-
-const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-// -------------------------------------------------------
-// Dark Mode Toggle
-// -------------------------------------------------------
-function toggleTheme() {
-  const html = document.documentElement;
-  const btn = document.getElementById("theme-toggle");
-  const isDark = html.getAttribute("data-theme") === "dark";
-
-  if (isDark) {
-    html.setAttribute("data-theme", "light");
-    btn.textContent = "🌙";
-    localStorage.setItem("theme", "light");
-  } else {
-    html.setAttribute("data-theme", "dark");
-    btn.textContent = "☀️";
-    localStorage.setItem("theme", "dark");
-  }
+// Create 25 icons
+for (let i = 0; i < 25; i++) {
+    const emoji = document.createElement('span');
+    emoji.classList.add('interactive-weather-icon');
+    emoji.innerText = weatherEmojis[Math.floor(Math.random() * weatherEmojis.length)];
+    
+    // Set random initial positions inside the container
+    emoji.style.left = Math.random() * 95 + '%';
+    emoji.style.top = Math.random() * 95 + '%';
+    
+    spawnArea.appendChild(emoji);
 }
 
-// Load saved theme on startup
-function loadTheme() {
-  const saved = localStorage.getItem("theme") || "light";
-  document.documentElement.setAttribute("data-theme", saved);
-  document.getElementById("theme-toggle").textContent = saved === "dark" ? "☀️" : "🌙";
-}
-
-// -------------------------------------------------------
-// Status helper
-// -------------------------------------------------------
-function setStatus(message, type = "") {
-  const status = document.getElementById("status");
-  status.textContent = message;
-  status.className = type;
-}
-
-// -------------------------------------------------------
-// Main fetch function
-// -------------------------------------------------------
-async function fetchWeather() {
-  const city = document.getElementById("city-input").value.trim();
-  if (!city) return;
-
-  const card = document.getElementById("weather-card");
-  card.style.display = "none";
-  setStatus("Fetching weather...", "loading");
-
-  try {
-    const [currentRes, forecastRes] = await Promise.all([
-      fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`
-      ),
-      fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`
-      ),
-    ]);
-
-    if (!currentRes.ok) throw new Error("City not found. Please try another name.");
-
-    const current = await currentRes.json();
-    const forecast = await forecastRes.json();
-
-    renderCurrent(current);
-    renderForecast(forecast);
-
-    setStatus("");
-    card.style.display = "block";
-  } catch (err) {
-    setStatus(err.message || "Something went wrong. Please try again.", "error");
-  }
-}
-
-// -------------------------------------------------------
-// Render current weather
-// -------------------------------------------------------
-function renderCurrent(data) {
-  const now = new Date();
-
-  document.getElementById("city-display").textContent =
-    `${data.name}, ${data.sys.country}`;
-
-  document.getElementById("date-display").textContent =
-    now.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+// Fixed Interaction Logic
+weatherBox.addEventListener('mousemove', (e) => {
+    const allIcons = document.querySelectorAll('.interactive-weather-icon');
+    
+    allIcons.forEach(icon => {
+        const rect = icon.getBoundingClientRect();
+        const iconX = rect.left + rect.width / 2;
+        const iconY = rect.top + rect.height / 2;
+        
+        // Calculate distance between cursor and emoji
+        const distance = Math.hypot(e.clientX - iconX, e.clientY - iconY);
+        
+        if (distance < 120) {
+            const angle = Math.atan2(iconY - e.clientY, iconX - e.clientX);
+            // Push distance
+            const force = 40; 
+            const moveX = Math.cos(angle) * force;
+            const moveY = Math.sin(angle) * force;
+            
+            icon.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.4)`;
+        } else {
+            icon.style.transform = `translate(0, 0) scale(1)`;
+        }
     });
+});
 
   document.getElementById("main-icon").textContent =
     weatherIcons[data.weather[0].main] || "🌡️";
