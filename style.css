@@ -35,3 +35,7 @@
     user-select: none;
     z-index: 2;
 }
+
+.dark-mode #clock {
+    color: #fff;
+}
