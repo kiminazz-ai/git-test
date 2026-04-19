@@ -145,3 +145,57 @@ document.getElementById("city-input").addEventListener("keydown", (e) => {
 // Load default city on startup
 document.getElementById("city-input").value = "Kuantan";
 fetchWeather();
+
+// ... existing code above ...
+
+async function fetchWeather() {
+  const city = document.getElementById("city-input").value.trim();
+  if (!city) return;
+
+  const card = document.getElementById("weather-card");
+  card.style.display = "none";
+  setStatus("Fetching data...", "loading");
+
+  try {
+    // We add a third fetch for Prayer Times
+    const [currentRes, forecastRes, prayerRes] = await Promise.all([
+      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`),
+      fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`),
+      fetch(`https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=&method=2`)
+    ]);
+
+    if (!currentRes.ok) throw new Error("City not found.");
+    
+    const current = await currentRes.json();
+    const forecast = await forecastRes.json();
+    const prayerData = await prayerRes.json();
+
+    renderCurrent(current);
+    renderForecast(forecast);
+    renderPrayers(prayerData.data.timings); // Call the new prayer render function
+
+    setStatus("");
+    card.style.display = "block";
+  } catch (err) {
+    setStatus(err.message || "Something went wrong.", "error");
+  }
+}
+
+// New function to render Prayer Times
+function renderPrayers(timings) {
+  const prayers = [
+    { name: "Fajr", time: timings.Fajr },
+    { name: "Dhuhr", time: timings.Dhuhr },
+    { name: "Asr", time: timings.Asr },
+    { name: "Maghrib", time: timings.Maghrib },
+    { name: "Isha", time: timings.Isha }
+  ];
+
+  document.getElementById("prayer-row").innerHTML = prayers
+    .map(p => `
+        <div class="prayer-item">
+          <div class="prayer-name">${p.name}</div>
+          <div class="prayer-time">${p.time}</div>
+        </div>
+    `).join("");
+}
