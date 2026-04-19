@@ -271,5 +271,9 @@ body {
 .fday-temp {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #1a1a1a;
+}
+
+.dark-mode #clock {
+    color: #fff;
 }
