@@ -1,196 +1,37 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Scope everything to your ID */
+#omar-weather-app {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(125deg, #2980b9, #6dd5fa, #ffffff);
+    background-size: 400% 400%;
+    animation: weatherGradient 15s ease infinite;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f0f4f8;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2rem 1rem;
-  color: #1a1a1a;
+@keyframes weatherGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-.weather-wrap {
-  width: 100%;
-  max-width: 480px;
+#omar-weather-app .weather-ui-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    z-index: 5;
+    pointer-events: none; /* Allows mouse to pass through text to the icons */
 }
 
-.app-title {
-  font-size: 24px;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #1a1a1a;
-}
-
-/* Search */
-.search-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 1rem;
-}
-
-.search-row input {
-  flex: 1;
-  padding: 10px 14px;
-  font-size: 15px;
-  border: 1px solid #d0d7de;
-  border-radius: 10px;
-  outline: none;
-  background: #fff;
-  transition: border-color 0.2s;
-}
-
-.search-row input:focus {
-  border-color: #4a90e2;
-}
-
-.search-row button {
-  padding: 10px 20px;
-  font-size: 15px;
-  font-weight: 500;
-  background: #4a90e2;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.search-row button:hover {
-  background: #357abd;
-}
-
-/* Status messages */
-#status {
-  font-size: 13px;
-  min-height: 20px;
-  margin-bottom: 8px;
-}
-
-#status.loading {
-  color: #666;
-}
-
-#status.error {
-  color: #e24b4a;
-}
-
-/* Card */
-.card {
-  background: #ffffff;
-  border: 1px solid #e1e8f0;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-}
-
-.city-name {
-  font-size: 22px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin-bottom: 4px;
-}
-
-.date-text {
-  font-size: 13px;
-  color: #6b7280;
-  margin-bottom: 1.5rem;
-}
-
-/* Main weather display */
-.main-weather {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 1.5rem;
-}
-
-.weather-icon {
-  font-size: 60px;
-  line-height: 1;
-}
-
-.temp {
-  font-size: 48px;
-  font-weight: 600;
-  color: #1a1a1a;
-}
-
-.condition {
-  font-size: 15px;
-  color: #6b7280;
-  margin-top: 4px;
-}
-
-/* Stats grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 1.5rem;
-}
-
-.stat {
-  background: #f5f7fa;
-  border-radius: 10px;
-  padding: 12px;
-  text-align: center;
-}
-
-.stat-label {
-  font-size: 12px;
-  color: #6b7280;
-  margin-bottom: 4px;
-}
-
-.stat-value {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a1a1a;
-}
-
-/* Forecast */
-.section-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #6b7280;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 10px;
-}
-
-.forecast {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-}
-
-.fday {
-  background: #f5f7fa;
-  border-radius: 10px;
-  padding: 10px 6px;
-  text-align: center;
-}
-
-.fday-name {
-  font-size: 11px;
-  color: #6b7280;
-  margin-bottom: 6px;
-}
-
-.fday-icon {
-  font-size: 22px;
-  margin-bottom: 4px;
-}
-
-.fday-temp {
-  font-size: 13px;
-  font-weight: 600;
-  color: #1a1a1a;
+/* Corrected Icon Styling */
+.interactive-weather-icon {
+    position: absolute;
+    font-size: 2.5rem;
+    cursor: grab;
+    transition: transform 0.1s linear; /* Faster response for tracking */
+    user-select: none;
+    z-index: 2;
 }

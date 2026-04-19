@@ -1,57 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weather App</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-
-  <div class="weather-wrap">
-    <h1 class="app-title">Weather App</h1>
-
-    <div class="search-row">
-      <input type="text" id="city-input" placeholder="Search city... e.g. London" />
-      <button id="search-btn" onclick="fetchWeather()">Search</button>
-    </div>
-
-    <div id="status"></div>
-
-    <div id="weather-card" style="display:none;">
-      <div class="card">
-        <p class="city-name" id="city-display"></p>
-        <p class="date-text" id="date-display"></p>
-
-        <div class="main-weather">
-          <div class="weather-icon" id="main-icon"></div>
-          <div>
-            <div class="temp" id="temp-display"></div>
-            <div class="condition" id="condition-display"></div>
-          </div>
+<section id="omar-weather-app">
+    <div id="weather-background">
+        <div id="icon-spawn-area"></div>
+        <div class="weather-ui-overlay">
+            <h1>Local Forecast</h1>
+            <p>Interactive Atmosphere Active</p>
         </div>
-
-        <div class="stats-grid">
-          <div class="stat">
-            <div class="stat-label">Feels like</div>
-            <div class="stat-value" id="feels-like"></div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Humidity</div>
-            <div class="stat-value" id="humidity"></div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Wind</div>
-            <div class="stat-value" id="wind"></div>
-          </div>
-        </div>
-
-        <p class="section-label">5-Day Forecast</p>
-        <div class="forecast" id="forecast-row"></div>
-      </div>
     </div>
-  </div>
-
-  <script src="app.js"></script>
-</body>
-</html>
+</section>
