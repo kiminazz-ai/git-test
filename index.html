@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +9,10 @@
 <body>
 
   <div class="weather-wrap">
-    <h1 class="app-title">Weather App</h1>
+    <div class="header-row">
+      <h1 class="app-title">Weather App</h1>
+      <button id="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
+    </div>
 
     <div class="search-row">
       <input type="text" id="city-input" placeholder="Search city... e.g. London" />
